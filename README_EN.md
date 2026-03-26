@@ -267,7 +267,7 @@ git push
 
 ## Version
 
-- `0.9.2`: added signature manifest generator script and release/publish runbook for sensory-channel-first deployment
+- `0.9.2`: added signature manifest generator and release/publish runbook, plus README semantic refinements (5-axis vs metadata, social-axis example, proxy input examples, FeltSense role clarification, and test coverage categories)
 - `0.9.1`: version/doc consistency sync (`VERSION`/`pyproject`/`__version__`, README verification baseline)
 - `0.9.0`: five-sense to sixth-sense extension (`FeltSenseState`, `felt_sense_input`) integrated into handoff
 - `0.8.0`: daily metrics rotation, Prometheus `/metrics`, ingress error/latency histogram stats

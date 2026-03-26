@@ -218,6 +218,7 @@ python3 -m pytest tests/ -q --tb=no
 
 ## 버전
 
+- `0.9.2`: README 구조 정리(5축/메타 분리, social 축 예시, proxy 입력 예시, FeltSense 역할 보강, 테스트 범주 명시) 및 배포/서명 운용 가이드 추가
 - `0.9.1`: 버전/문서 정합 정리 (`VERSION`/`pyproject`/`__version__`, README 검증 수치 동기화)
 - `0.9.0`: 오감 -> 육감 확장 추가 (`FeltSenseState`, `felt_sense_input`) 및 핸드오프 연계
 - `0.8.0`: metrics 일자 로테이션, `/metrics` Prometheus 출력, ingress 에러/지연 히스토그램 통계 추가
