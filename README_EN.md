@@ -24,12 +24,15 @@ Extended flow:
 
 - Input channels: `vision`, `hearing`, `touch`, `smell`, `taste`
 - Reaction output: `ReactionDecision(arousal, valence, priority, action)`
-- Situation output: `SituationVector(threat, novelty, social, urgency, stability, dominant_channels)`
+- Situation output (5-axis): `SituationVector(threat, novelty, social, urgency, stability)`
+- Supporting metadata: `dominant_channels` (channel-dominance summary, not an axis)
 - Memory:
   - Short-term memory: recent stimulus buffer
   - Long-term memory: familiarity from `(channel, signal)` signature frequency
 
 ## Layered MVP (v0.2.0)
+
+The core layered pipeline was introduced in `v0.2.0`, and the current package version is `v0.9.2`.
 
 - Layer 0 `Raw Channels`: vision/audition/touch first, with smell/taste proxies
 - Layer 1 `Sensory Frame`: per-tick merged frame (`SensoryFrame`)
@@ -39,8 +42,9 @@ Extended flow:
 - Layer 5 `Sensory Trace`: memory trace persistence (`SensoryTraceStore`)
 - Layer 6 `Cognitive Handoff`: bridge outputs for emotion/memory/action/snn/mpk
 - Layer 6.5 `Felt Sense`: `FeltSenseState` (gut_risk/coherence/confidence/felt_tag)
+  - role: a low-latency intuitive summary signal generated after salience/reflex, shared with higher cognition and MPK handoff
 
-## Edge-Ready Independent Module (v0.9.1)
+## Edge-Ready Independent Module (current v0.9.2)
 
 - `ingress/`: sensor adapter interface (`CameraStubIngress`, `MicStubIngress`, `TouchStubIngress`)
 - production-style ingress options:
@@ -63,6 +67,9 @@ In practice:
 
 - implemented channels: camera/mic/touch/app-event/jsonl/udp
 - proxy channels: smell/taste
+- proxy source examples:
+  - `smell`: gas sensor flag, chemical event tag
+  - `taste`: ingest event, chemical input tag
 - role: standardize sensory intake into salience / reflex / trace / handoff before heavier cognition
 
 ## MPK handoff
@@ -101,6 +108,7 @@ Situation axes (example):
 
 - `threat = max(I_i)`
 - `novelty = mean(N_i)`
+- `social = clamp01(mean(context_social_cues))`  # normalized social/proximity/group cue summary
 - `urgency = mean(U_i)`
 - `stability = 1 - urgency`
 
@@ -197,6 +205,7 @@ python3 -m pytest tests/ -q --tb=no
 Current local verification baseline:
 
 - `19 passed`
+- coverage categories: core pipeline, ingress normalization, runtime queue/drop, MPK bridge, metrics/health
 
 ## Changelog / Integrity
 

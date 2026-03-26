@@ -23,7 +23,8 @@
 
 - 입력 채널: `vision`, `hearing`, `touch`, `smell`, `taste`
 - 반응 출력: `ReactionDecision(arousal, valence, priority, action)`
-- 상황 판단: `SituationVector(threat, novelty, social, urgency, stability, dominant_channels)`
+- 상황 판단(5축): `SituationVector(threat, novelty, social, urgency, stability)`
+- 보조 메타: `dominant_channels` (축이 아닌 채널 우세도 요약)
 - 기억:
   - 단기기억: 최근 자극 버퍼
   - 장기기억: `(channel, signal)` 시그니처 빈도 기반 친숙도
@@ -33,8 +34,13 @@
 - 현재 구현의 **실채널**은 `vision`, `hearing`, `touch` 중심이다.
 - `smell`, `taste`는 현재 `proxy` 입력으로만 다뤄진다.
 - 즉 지금 버전은 “오감 완성 엔진”보다 **3실채널 + 2프록시 구조의 sensory front kernel**로 보는 것이 정확하다.
+- proxy 예시:
+  - `smell`: gas sensor flag, chemical event tag
+  - `taste`: ingest event, chemical input tag
 
-## 레이어 구조 (MVP v0.2.0)
+## 레이어 구조
+
+핵심 파이프라인 MVP 도입 버전은 `v0.2.0`, 현재 패키지 버전은 `v0.9.2`이다.
 
 - Layer 0 `Raw Channels`: vision/audition/touch 중심 + smell/taste proxy
 - Layer 1 `Sensory Frame`: `SensoryFrame`으로 한 틱 감각 상태 결합
@@ -44,8 +50,9 @@
 - Layer 5 `Sensory Trace`: 감각 흔적 저장 (`SensoryTraceStore`)
 - Layer 6 `Cognitive Handoff`: emotion/memory/action/snn/mpk 브리지 출력
 - Layer 6.5 `Felt Sense`: `FeltSenseState` (gut_risk/coherence/confidence/felt_tag)
+  - 의미: salience/reflex 후단에서 생성되는 저지연 직관 요약 신호이며, 상위 인지와 MPK 입력에 함께 사용된다.
 
-## 엣지 독립 모듈 (v0.9.1)
+## 엣지 독립 모듈 (현재 v0.9.2)
 
 - `ingress/`: 센서 입력 어댑터 인터페이스 (`CameraStubIngress`, `MicStubIngress`, `TouchStubIngress`)
 - 실연동 ingress:
@@ -107,6 +114,7 @@ python3 examples/run_sik_mpk_session.py
 
 - `threat = max(I_i)`
 - `novelty = mean(N_i)`
+- `social = clamp01(mean(context_social_cues))`  # 대화/근접/집단 신호의 정규화 요약
 - `urgency = mean(U_i)`
 - `stability = 1 - urgency`
 
@@ -206,6 +214,7 @@ python3 -m pytest tests/ -q --tb=no
 현재 로컬 점검 기준:
 
 - `19 passed`
+- 범주: core pipeline, ingress normalization, runtime queue/drop, MPK bridge, metrics/health
 
 ## 버전
 
