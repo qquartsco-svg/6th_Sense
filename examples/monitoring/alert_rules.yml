@@ -1,0 +1,44 @@
+groups:
+  - name: sensory_input_kernel_alerts
+    interval: 15s
+    rules:
+      - alert: SensoryFeltWarningSpike
+        expr: increase(sensory_felt_tag_total{tag="premonition_warning"}[5m]) >= 3
+        for: 1m
+        labels:
+          severity: warning
+          component: sensory_input_kernel
+        annotations:
+          summary: "Felt warning spikes detected"
+          description: "premonition_warning tag increased by >=3 in last 5 minutes."
+
+      - alert: SensoryHighGutRisk
+        expr: sensory_felt_gut_risk > 0.80
+        for: 2m
+        labels:
+          severity: critical
+          component: sensory_input_kernel
+        annotations:
+          summary: "Sustained high gut risk"
+          description: "sensory_felt_gut_risk stayed above 0.80 for 2 minutes."
+
+      - alert: SensoryIngressErrorRatioHigh
+        expr: increase(sensory_ingress_errors_total[5m]) / clamp_min(increase(sensory_ingress_reads_total[5m]), 1) > 0.05
+        for: 2m
+        labels:
+          severity: warning
+          component: sensory_input_kernel
+        annotations:
+          summary: "Ingress error ratio high"
+          description: "Ingress error ratio exceeded 5% for 2 minutes."
+
+      - alert: SensoryQueueBacklog
+        expr: sensory_queue_size > 0
+        for: 3m
+        labels:
+          severity: warning
+          component: sensory_input_kernel
+        annotations:
+          summary: "Queue backlog detected"
+          description: "Queue remained non-zero for at least 3 minutes."
+

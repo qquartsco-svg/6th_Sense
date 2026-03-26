@@ -1,0 +1,284 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PROMETHEUS_UID"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "targets": [
+        {
+          "expr": "rate(sensory_ticks_total[1m])",
+          "legendFormat": "tick_rate",
+          "refId": "A"
+        }
+      ],
+      "title": "Tick Rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PROMETHEUS_UID"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "targets": [
+        {
+          "expr": "sensory_queue_size",
+          "legendFormat": "queue_size",
+          "refId": "A"
+        }
+      ],
+      "title": "Queue Size",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PROMETHEUS_UID"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 3,
+      "targets": [
+        {
+          "expr": "increase(sensory_drop_total[5m])",
+          "legendFormat": "drops_5m",
+          "refId": "A"
+        }
+      ],
+      "title": "Dropped Events (5m)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PROMETHEUS_UID"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 4,
+      "targets": [
+        {
+          "expr": "increase(sensory_ingress_errors_total[5m]) / clamp_min(increase(sensory_ingress_reads_total[5m]), 1)",
+          "legendFormat": "ingress_error_ratio",
+          "refId": "A"
+        }
+      ],
+      "title": "Ingress Error Ratio (5m)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PROMETHEUS_UID"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 5,
+      "targets": [
+        {
+          "expr": "sensory_ingress_latency_bucket{bucket=\"le_1ms\"}",
+          "legendFormat": "<=1ms",
+          "refId": "A"
+        },
+        {
+          "expr": "sensory_ingress_latency_bucket{bucket=\"le_5ms\"}",
+          "legendFormat": "<=5ms",
+          "refId": "B"
+        },
+        {
+          "expr": "sensory_ingress_latency_bucket{bucket=\"le_10ms\"}",
+          "legendFormat": "<=10ms",
+          "refId": "C"
+        },
+        {
+          "expr": "sensory_ingress_latency_bucket{bucket=\"le_50ms\"}",
+          "legendFormat": "<=50ms",
+          "refId": "D"
+        },
+        {
+          "expr": "sensory_ingress_latency_bucket{bucket=\"gt_50ms\"}",
+          "legendFormat": ">50ms",
+          "refId": "E"
+        }
+      ],
+      "title": "Ingress Latency Buckets",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PROMETHEUS_UID"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 24
+      },
+      "id": 6,
+      "targets": [
+        {
+          "expr": "sensory_felt_gut_risk",
+          "legendFormat": "gut_risk",
+          "refId": "A"
+        },
+        {
+          "expr": "sensory_felt_coherence",
+          "legendFormat": "coherence",
+          "refId": "B"
+        },
+        {
+          "expr": "sensory_felt_confidence",
+          "legendFormat": "confidence",
+          "refId": "C"
+        }
+      ],
+      "title": "Felt Sense Gauges",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PROMETHEUS_UID"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 24
+      },
+      "id": 7,
+      "targets": [
+        {
+          "expr": "sensory_felt_tag_total{tag=\"premonition_warning\"}",
+          "legendFormat": "warning",
+          "refId": "A"
+        },
+        {
+          "expr": "sensory_felt_tag_total{tag=\"premonition_clear\"}",
+          "legendFormat": "clear",
+          "refId": "B"
+        },
+        {
+          "expr": "sensory_felt_tag_total{tag=\"premonition_ambiguous\"}",
+          "legendFormat": "ambiguous",
+          "refId": "C"
+        }
+      ],
+      "title": "Felt Tag Totals",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": [
+    "sensory",
+    "edge",
+    "observability"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Sensory Input Kernel - Edge Runtime",
+  "uid": "sensory-input-kernel-edge",
+  "version": 1,
+  "weekStart": ""
+}
+
